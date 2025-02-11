@@ -1,0 +1,32 @@
+CREATE TABLE Users (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(255) NOT NULL,
+    email NVARCHAR(255) NOT NULL UNIQUE,
+    password NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Products (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(255) NOT NULL,
+    price FLOAT NOT NULL,
+    stock INT NOT NULL,
+    category NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Orders (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    userId INT NOT NULL,
+    total FLOAT NOT NULL,
+    date DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE OrderDetails (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    unitPrice FLOAT NOT NULL,
+    FOREIGN KEY (orderId) REFERENCES Orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (productId) REFERENCES Products(id) ON DELETE CASCADE
+);
